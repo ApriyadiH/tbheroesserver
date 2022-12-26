@@ -1,0 +1,23 @@
+{
+  "name": "tbheroesserver",
+  "version": "1.0.0",
+  "description": "Server side or back-end side for The Blood Heroes Project. Connecting potential blood donor to someone who need it. You can be a hero, join now.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ApriyadiH/tbheroesserver.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ApriyadiH/tbheroesserver/issues"
+  },
+  "homepage": "https://github.com/ApriyadiH/tbheroesserver#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
