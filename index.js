@@ -1,6 +1,6 @@
 // Import library
 const express = require("express");
-const https = require("https");
+const http = require("http");
 const cors = require("cors");
 const { Server } = require("socket.io");
 
@@ -10,7 +10,7 @@ const router = require("./api/");
 // Declare Variable
 const app = express();
 const port = 3001;
-const server = https.createServer(app);
+const server = http.createServer(app);
 
 app.use(cors());
 
