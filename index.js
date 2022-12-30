@@ -1,6 +1,6 @@
 // Import library
 const express = require("express");
-const http = require("http");
+const https = require("https");
 const cors = require("cors");
 const { Server } = require("socket.io");
 
@@ -10,13 +10,13 @@ const router = require("./api/");
 // Declare Variable
 const app = express();
 const port = 3001;
-const server = http.createServer(app);
+const server = https.createServer(app);
 
 app.use(cors());
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://tbheroesserver.vercel.app/",
     methods: ["GET", "POST"],
   },
 });
