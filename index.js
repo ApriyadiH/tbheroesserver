@@ -5,7 +5,7 @@ var express = require('express');
 var app = express();
 
 var options = {
-  key: fs.readFileSync('./PRIVATEKEY.key'),
+  key: fs.readFileSync('./file.pem'),
   cert: fs.readFileSync('./file.crt')
 };
 var port = 3001;
