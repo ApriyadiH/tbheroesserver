@@ -13,8 +13,8 @@ var port = 3001;
 var server = https.createServer(options, app);
 var io = require('socket.io')(server);
 
-app.get('/', function(req, res) {
-  res.sendFile(__dirname + '/public/index.html');
+app.get("/", (req, res) => {
+  res.send("Tersambung ke api/routes");
 });
 
 io.on('connection', function(socket) {
