@@ -1,69 +1,27 @@
-// Import library
-const express = require("express");
-const http = require("http");
-const cors = require("cors");
-const { Server } = require("socket.io");
+var fs = require('fs');
+var https = require('https');
 
-// Import file lain
-const router = require("./api/"); 
+var express = require('express');
+var app = express();
 
-// Declare Variable
-const app = express();
-const port = 3001;
-const server = http.createServer(app);
+var options = {
+  key: fs.readFileSync('./PRIVATEKEY.key'),
+  cert: fs.readFileSync('./file.crt')
+};
+var port = 3001;
 
-app.use(cors());
+var server = https.createServer(options, app);
+var io = require('socket.io')(server);
 
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:3000",
-    methods: ["GET", "POST"],
-  },
+app.get('/', function(req, res) {
+  res.sendFile(__dirname + '/public/index.html');
 });
 
-// test API
-app.get("/", (req, res) => {
-  res.send("Testing tersambung ke server");
+io.on('connection', function(socket) {
+  console.log('new connection');
+  socket.emit('message', 'This is a message from the dark side.');
 });
 
-app.use("/", express.json(), router);
-
-io.on("connection", (socket) => {
-  console.log(`User Connected: ${socket.id}`);
-
-  socket.on("send_message", (data) => {
-    socket.broadcast.emit("receive_message", data)
-  })
-
-
-
-
-
-})
-
-
-
-
-//   socket.on("join_room", (data) => {
-//     socket.join(data);
-//     console.log(`User with ID: ${socket.id} joined room: ${data}`);
-//   });
-
-//   socket.on("send_message", (data) => {
-//     socket.to(data.room).emit("receive_message", data);
-//   });
-
-//   socket.on("disconnect", () => {
-//     console.log("User Disconnected", socket.id);
-//   });
-// });
-
-server.listen(port, () => {
-  console.log("Web Socket running on",port);
+server.listen(port, function() {
+  console.log('server up and running at %s port', port);
 });
-
-
-
-// app.listen(port, () => {
-//   console.log(port, "Server is open with port!");
-// });
