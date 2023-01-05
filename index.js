@@ -1,86 +1,30 @@
 // Import library
 const express = require("express");
 const cors = require("cors");
+require("dotenv").config();
 
 // Import file lain
-const router = require("./api/"); 
+const router = require("./api/");
+const library = require("./lib/");
 
 // Declare Variable
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 
 app.use(cors());
+app.use(express.json());
 
-const Pusher = require("pusher");
-
-const pusher = new Pusher({
-  appId: "1532965",
-  key: "fbaea5207fa7923cfdce",
-  secret: "cc25a0d6352d576642c1",
-  cluster: "ap1",
-  useTLS: true
-});
-
-pusher.trigger("my-channel", "my-event", {
-  message: "hello world"
-});
-
-app.get("/alert", (req, res) => {
-  pusher.trigger("my-channel", "my-event", {
-    message: "hello world"
-  });
-  
-  res.send("Kirim Pesan");
-});
-
-
-
-// const io = new Server(server, {
-//   cors: {
-//     origin: "https://tbheroes-ahegarto-gmailcom.vercel.app/",
-//     methods: ["GET", "POST"],
-//   },
-// });
-
-// test API
+// Connection tester
 app.get("/", (req, res) => {
-  res.send("Testing tersambung ke server");
+  res.send("Connected to server");
 });
 
-app.use("/", express.json(), router);
+// Connecting to API
+app.use("/", router);
 
-// io.on("connection", (socket) => {
-//   console.log(`User Connected: ${socket.id}`);
-
-//   socket.on("send_message", (data) => {
-//     socket.broadcast.emit("receive_message", data)
-//   })
-
-// })
-
-
-
-
-//   socket.on("join_room", (data) => {
-//     socket.join(data);
-//     console.log(`User with ID: ${socket.id} joined room: ${data}`);
-//   });
-
-//   socket.on("send_message", (data) => {
-//     socket.to(data.room).emit("receive_message", data);
-//   });
-
-//   socket.on("disconnect", () => {
-//     console.log("User Disconnected", socket.id);
-//   });
-// });
+// Connecting to library
+app.use("/", library);
 
 app.listen(port, () => {
-  console.log("Web Socket running on",port);
+  console.log("Server running on",port);
 });
-
-
-
-// app.listen(port, () => {
-//   console.log(port, "Server is open with port!");
-// });
