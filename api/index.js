@@ -6,7 +6,7 @@ const marker = require("./marker");
 const register = require("./register");
 const request = require("./request");
 const user = require("./user");
-const Test = require("./Test");
+const schematester = require("./schematester");
 
 
 module.exports = [
@@ -18,5 +18,5 @@ module.exports = [
   register,
   request,
   user,
-  Test 
+  schematester 
 ];

@@ -7,6 +7,10 @@ require("dotenv").config();
 const router = require("./api/");
 const library = require("./lib/");
 
+// Connecting to schemas
+const connect = require("./schemas");
+connect();
+
 // Declare Variable
 const app = express();
 const port = process.env.PORT || 3001;
