@@ -19,15 +19,15 @@ app.use(cors());
 app.use(express.json());
 
 // Connection tester
-// app.get("/", (req, res) => {
-//   res.send("Connected to server");
-// });
+app.get("/", (req, res) => {
+  res.send("Connected to server");
+});
 
 // Connecting to API
-app.use("/", router);
+// app.use("/", router);
 
 // Connecting to library
-app.use("/", library);
+// app.use("/", library);
 
 app.listen(port, () => {
   console.log("Server running on",port);
