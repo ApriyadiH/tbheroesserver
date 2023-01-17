@@ -27,9 +27,9 @@ router.get("/chat", async (req,res) => {
     roomId = userId1 + "+" + userId2;
   }
 
-  const fetchChats = await Chats.find( {roomId : roomId} );
+  const chatList = await Chats.find( {roomId : roomId} );
 
-  const results = fetchChats.map((content) => {
+  const results = chatList.map((content) => {
     return content;
   });
 

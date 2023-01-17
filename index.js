@@ -19,9 +19,9 @@ app.use(cors());
 app.use(express.json());
 
 // Connection tester
-app.get("/", (req, res) => {
-  res.send("Connected to server");
-});
+// app.get("/", (req, res) => {
+//   res.send("Connected to server");
+// });
 
 // Connecting to API
 app.use("/", router);
