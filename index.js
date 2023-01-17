@@ -20,7 +20,21 @@ app.use(express.json());
 
 // Connection tester
 app.get("/", (req, res) => {
-  res.send("Connected to server");
+  res.send("Welcome to The Blood Heroes Server");
+});
+
+
+const adminMiddleware = require("./middlewares/adminMiddleware");
+const authMiddleware = require("./middlewares/authMiddleware");
+
+// authMiddleware Tester
+app.get("/schemas/authmiddleware", authMiddleware, (res) => {
+  res.send("Connected to API tester schema with auth");
+});
+
+// // adminMiddleware Tester
+app.get("/schemas/adminmiddleware", adminMiddleware, (req, res) => {
+  res.send("Connected to API tester schema with admin");
 });
 
 // Connecting to API
