@@ -11,7 +11,7 @@ module.exports = (req, res, next) => {
       message: "Login is needed.",
     });
     return;
-  }
+  };
 
   try {
     const { userId } = jwt.verify(authToken, process.env.SECRET_KEY);
@@ -21,5 +21,5 @@ module.exports = (req, res, next) => {
     });
   } catch (err) {
     res.status(401).send({ message: "Login is needed." });
-  }
+  };
 };
