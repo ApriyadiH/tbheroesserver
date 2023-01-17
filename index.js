@@ -29,12 +29,12 @@ const authMiddleware = require("./middlewares/authMiddleware");
 
 // authMiddleware Tester
 app.get("/schemas/authmiddleware", authMiddleware, async (res) => {
-  res.send("Connected to API tester schema with auth");
+  res.status(200).send("Connected to API tester schema with auth");
 });
 
 // // adminMiddleware Tester
 app.get("/schemas/adminmiddleware", adminMiddleware, async (req, res) => {
-  res.send("Connected to API tester schema with admin");
+  res.status(200).send("Connected to API tester schema with admin");
 });
 
 // Connecting to API
