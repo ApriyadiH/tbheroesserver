@@ -6,7 +6,8 @@
 // const register = require("./register");
 // const request = require("./request");
 // const user = require("./user");
-const schematester = require("./schematester");
+// const schematester = require("./schematester");
+const test = require("./test");
 
 
 module.exports = [
@@ -18,5 +19,6 @@ module.exports = [
   // register,
   // request,
   // user,
-  schematester 
+  // schematester 
+  test
 ];
