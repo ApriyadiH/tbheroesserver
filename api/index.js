@@ -1,4 +1,4 @@
-const chat = require("./chat");
+// const chat = require("./chat");
 // const donor = require("./donor");
 // const event = require("./event");
 // const login = require("./login");
@@ -6,11 +6,11 @@ const chat = require("./chat");
 // const register = require("./register");
 // const request = require("./request");
 // const user = require("./user");
-// const schematester = require("./schematester");
+const schematester = require("./schematester");
 
 
 module.exports = [
-  chat,
+  // chat,
   // donor,
   // event,
   // login,
@@ -18,5 +18,5 @@ module.exports = [
   // register,
   // request,
   // user,
-  // schematester 
+  schematester 
 ];
