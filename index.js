@@ -4,7 +4,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 // Import file lain
-// const router = require("./api/");
+const router = require("./api/");
 const library = require("./lib/");
 
 // Connecting to schemas
@@ -24,7 +24,7 @@ app.get("/", (req, res) => {
 });
 
 // Connecting to API
-// app.use("/", router);
+app.use("/", router);
 
 // Connecting to library
 app.use("/", library);

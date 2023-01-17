@@ -1,3 +1,5 @@
+// MAYBE THERE IS MORE EFFICIENT WAY TO WRITE THIS MIDDLEWARE.
+
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const Users = require("../schemas/user");
