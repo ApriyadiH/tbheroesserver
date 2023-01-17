@@ -4,12 +4,12 @@ const cors = require("cors");
 require("dotenv").config();
 
 // Import file lain
-const router = require("./api/");
-const library = require("./lib/");
+// const router = require("./api/");
+// const library = require("./lib/");
 
 // Connecting to schemas
-const connect = require("./schemas");
-connect();
+// const connect = require("./schemas");
+// connect();
 
 // Declare Variable
 const app = express();
