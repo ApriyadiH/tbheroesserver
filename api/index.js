@@ -14,9 +14,9 @@ module.exports = [
   // chat,
   // donor,
   // event,
-  login,
+  // login,
   // marker,
-  register,
+  // register,
   // request,
   // user,
   // schematester 
