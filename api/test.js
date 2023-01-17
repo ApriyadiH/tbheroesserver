@@ -10,7 +10,7 @@ router.get("/test/test", (req, res) => {
 });
 
 // authMiddleware Tester
-router.get("/schemas/authmiddleware", authMiddleware, (req, res) => {
+router.get("/schemas/authmiddleware", authMiddleware, (res) => {
   res.send("Connected to API tester schema with auth");
 });
 // // adminMiddleware Tester
