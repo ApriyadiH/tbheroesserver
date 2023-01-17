@@ -2,7 +2,7 @@
 
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
-const Users = require("../schemas/user");
+const Users = require("../schemas/User");
 
 module.exports = (req, res, next) => {
   const { authorization } = req.headers;
