@@ -10,12 +10,13 @@ const authMiddleware = require("../middlewares/authMiddleware")
 
 const router = express.Router();
 
-const Chats = require("../schemas/chats");
+const Chats = require("../schemas/chat");
 
 router.get("/test/chat", authMiddleware, (req, res) => {
   res.send("Connected to API chat");
 });
 
+const chatCreated = "Chat created"
 // 26. fetch messages list
 router.get("/chat", async (req,res) => {
   const {userId1, userId2} = req.body;
@@ -48,7 +49,7 @@ router.post("/chat", async (req, res) => {
   });
 
   res.json({
-    message: "Chat created",
+    message: chatCreated,
     data_baru: createChat });
 });
 

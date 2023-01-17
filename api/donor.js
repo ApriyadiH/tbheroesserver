@@ -2,7 +2,7 @@
 
 const express = require("express");
 
-const Donors = require("../schemas/donors");
+const Donors = require("../schemas/donor");
 
 const router = express.Router();
 

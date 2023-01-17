@@ -1,25 +1,31 @@
 const mongoose = require('mongoose');
 
-const eventsSchema = new mongoose.Schema({
-  userId: {
-    type: String,
-    required: true
-  },
+const userSchema = new mongoose.Schema({
   image: {
     type: String,
     required: true
   },
-  name: {
+  username: {
     type: String,
     required: true
   },
-  date: {
-    type: Date,
+  email: {
+    type: String,
     required: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
+  role: {
+    type: String,
+    required: true
+  },
+  bloodType: {
+    type: String
   },
   location: {
-    type: String,
-    required: true
+    type: Array
   },
   status: {
     type: String,
@@ -29,8 +35,8 @@ const eventsSchema = new mongoose.Schema({
   timestamps:true
 })
 
-eventsSchema.virtual("EventId").get(function () {
+userSchema.virtual("userId").get(function () {
   return this._id.toHexString();
 });
 
-module.exports = mongoose.model('Events', eventsSchema)
+module.exports = mongoose.model('Users', userSchema)

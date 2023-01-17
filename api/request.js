@@ -5,8 +5,8 @@ const express = require("express");
 
 const router = express.Router();
 
-const Requests = require("../schemas/requests");
-const Users = require("../schemas/users");
+const Requests = require("../schemas/request");
+const Users = require("../schemas/user");
 
 router.get("/test/request", (req, res) => {
   res.send("Connected to API request");

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const chatsSchema = new mongoose.Schema({
+const chatSchema = new mongoose.Schema({
     roomId: {
         type: String,
         required: true
@@ -19,8 +19,8 @@ const chatsSchema = new mongoose.Schema({
     }
 })
 
-chatsSchema.virtual("chatId").get(function () {
+chatSchema.virtual("chatId").get(function () {
     return this._id.toHexString();
 });
 
-module.exports = mongoose.model('Chats', chatsSchema)
+module.exports = mongoose.model('Chats', chatSchema)

@@ -16,8 +16,12 @@ module.exports = (req, res, next) => {
   try {
     const { userId } = jwt.verify(authToken, process.env.SECRET_KEY);
     Users.findById(userId).then((user) => {
-        res.locals.user = user;
-        next();
+        if (user.role === "admin"){
+          res.locals.user = user;
+          next();
+        } else {
+          res.status(400).send({ message: "Not an admin"})
+        }
     });
   } catch (err) {
     res.status(401).send({ message: "Login is needed." });

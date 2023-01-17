@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const requestsSchema = new mongoose.Schema({
+const requestSchema = new mongoose.Schema({
     userId: {
         type: String,
         required: true
@@ -25,8 +25,8 @@ const requestsSchema = new mongoose.Schema({
     timestamps:true
 })
 
-requestsSchema.virtual("requestId").get(function () {
+requestSchema.virtual("requestId").get(function () {
     return this._id.toHexString();
 });
 
-module.exports = mongoose.model('Requests', requestsSchema)
+module.exports = mongoose.model('Requests', requestSchema)

@@ -10,18 +10,29 @@
 
 // Import Library
 const express = require("express");
+const adminMiddleware = require("../middlewares/adminMiddleware");
+const authMiddleware = require("../middlewares/authMiddleware");
 const router = express.Router();
 
 // Import Schemas
-const Chats = require("../schemas/chats");
-const Donors = require("../schemas/donors");
-const Events = require("../schemas/events");
-const Requests = require("../schemas/requests");
-const Users = require("../schemas/users");
+const Chats = require("../schemas/chat");
+const Donors = require("../schemas/donor");
+const Events = require("../schemas/event");
+const Requests = require("../schemas/request");
+const Users = require("../schemas/user");
 
 // Test connection
 router.get("/schemas", (req, res) => {
   res.send("Connected to API tester schema");
+});
+
+// authMiddleware Tester
+router.get("/schemas/authmiddleware", authMiddleware, (req, res) => {
+  res.send("Connected to API tester schema with auth");
+});
+// adminMiddleware Tester
+router.get("/schemas/adminmiddleware", adminMiddleware, (req, res) => {
+  res.send("Connected to API tester schema with admin");
 });
 
 //   /$$$$$$  /$$                   /$$             

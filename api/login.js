@@ -7,7 +7,7 @@ const Joi = require("joi");
 const bcrypt = require('bcryptjs');
 const jwt = require("jsonwebtoken");
 
-const Users = require("../schemas/users");
+const Users = require("../schemas/user");
 
 const loginSchema = Joi.object({
   email: Joi.string().email().required(),
