@@ -23,20 +23,6 @@ app.get("/", (req, res) => {
   res.send("Welcome to The Blood Heroes Server");
 });
 
-
-const adminMiddleware = require("./middlewares/adminMiddleware");
-const authMiddleware = require("./middlewares/authMiddleware");
-
-// authMiddleware Tester
-app.get("/schemas/authmiddleware", authMiddleware, async (res) => {
-  res.status(200).send("Connected to API tester schema with auth");
-});
-
-// // adminMiddleware Tester
-app.get("/schemas/adminmiddleware", adminMiddleware, async (req, res) => {
-  res.status(200).send("Connected to API tester schema with admin");
-});
-
 // Connecting to API
 app.use("/", router);
 
