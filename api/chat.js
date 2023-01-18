@@ -1,56 +1,68 @@
 ////////////////////
-// APRI : 
-// This is API for chat box
+// This is API for:
+// 1. fetching past chat
+// 2. storing chat
 // User need to login to access this feature
 ////////////////////
 
-// Import library
+// Import
 const express = require("express");
-const authMiddleware = require("../middlewares/authMiddleware")
+const authMiddleware = require("../middlewares/authMiddleware");
+const Chats = require("../schemas/chat");
+const { GSConnect, GFFind, CSCreate, CFCreate, } = require("../constants");
 
 const router = express.Router();
 
-const Chats = require("../schemas/chat");
-
-router.get("/test/chat", authMiddleware, (req, res) => {
-  res.send("Connected to API chat");
+// Test API connection
+router.get("/test/chat", (req, res) => {
+  res.send(GSConnect);
 });
 
-const chatCreated = "Chat created"
 // 26. fetch messages list
-router.get("/chat", async (req,res) => {
+router.get("/chat", authMiddleware, async (req,res) => {
   const {userId1, userId2} = req.body;
-  let roomId
+
+  // Create RoomId based on 2 userId
+  let roomId;
   if (userId1 > userId2){
     roomId = userId2 + "+" + userId1;
   } else if (userId1 < userId2){
     roomId = userId1 + "+" + userId2;
-  }
+  };
 
-  const chatList = await Chats.find( {roomId : roomId} );
+  try {
+    const results = await Chats.find( {roomId} );
 
-  const results = chatList.map((content) => {
-    return content;
-  });
-
-  res.json({
-    data: results,
-  });
+    res.status(200).json({
+      data: results
+    });
+  } catch (err) {
+    res.status(400).send({
+      message: GFFind
+    });
+  };
 });
 
 // 27. send a message
-router.post("/chat", async (req, res) => {
+router.post("/chat", authMiddleware, async (req, res) => {
   const { roomId, userId, chat } = req.body;
-  const createChat = await Chats.create({
-    roomId,
-    userId,
-    chat,
-    time: Date.now() 
-  });
 
-  res.json({
-    message: chatCreated,
-    data_baru: createChat });
+  try {
+    await Chats.create({
+      roomId,
+      userId,
+      chat,
+      time: Date.now() 
+    });
+  
+    res.status(200).json({
+      message: CSCreate
+    });    
+  } catch (err) {
+    res.status(400).json({
+      message: CFCreate
+    });
+  };
 });
-
+  
 module.exports = router;

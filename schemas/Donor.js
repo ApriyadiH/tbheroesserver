@@ -15,8 +15,8 @@ const donorSchema = new mongoose.Schema({
   comment: {
     type: String
   },
-  status: {
-    type: String,
+  isFinish: {
+    type: Boolean,
     required: true
   }
 },{

@@ -1,47 +1,69 @@
-// MAKE STATUS MORE CLEAR
+////////////////////
+// This is API for:
+// 1. Check user history, user past donation process.
+// 2. Donor process or when volunteer want to donate their blood.
+// 3. Write a review to an user who donated their blood.
+// User need to login to access this feature
+////////////////////
 
+// Import
 const express = require("express");
-
+const authMiddleware = require("../middlewares/authMiddleware");
 const Donors = require("../schemas/donor");
+const { GSConnect, DDContent, GFFind, DSParticipate, DFParticipate, DSReview, DFReview } = require("../constants");
 
 const router = express.Router();
 
+// Test API connection
 router.get("/test/donor", (req, res) => {
-  res.send("Connected to API donor");
+  res.send(GSConnect);
 });
 
 // 28. get connected donor list
-router.get("/donor/:userId", async (req, res) => {
+router.get("/donor/:userId", authMiddleware, async (req, res) => {
   const { userId } = req.params;
-  const fetchDonors = await Donors.find({ userId }, "requestId endDate comment status");
 
-  const results = fetchDonors.map((content) => {
-		return {
-      donorId: content._id,
-      requestId: content.requestId,
-      date: content.endDate,
-      comment: content.comment,
-      status: content.status
-    }
-  });
+  try {
+    const donorList = await Donors.find({ userId }, DDContent);
 
-  res.json({
-    data: results
-  });
+    const results = donorList.map(({ _id, requestId, endDate, comment, isFinish }) => ({
+      donorId: _id,
+      requestId,
+      date: endDate,
+      comment,
+      isFinish
+    }));
+    
+    res.status(200).json({
+      data: results
+    });
+  } catch (err) {
+    res.status(400).json({
+      message: GFFind
+    });
+  };
 });
 
 // 29. Add Donor
-router.post("/donor", async (req, res) => {
+router.post("/donor", authMiddleware, async (req, res) => {
   const { requestId, userId } = req.body;
-  const createDonor = await Donors.create({ 
-    requestId,
-    userId, 
-    status: "on progress"
-  });
 
-  res.json({
-    message: "user connected",
-    data_baru: createDonor });
+  try {
+    await Donors.create({ 
+      requestId,
+      userId, 
+      isFinish: false
+    });
+  
+    res.status(200).json({
+      message: DSParticipate
+    });
+    
+  } catch (err) {
+    res.status(400).json({
+      message: DFParticipate
+    });
+  };
 });
 
 // 30. post a review
@@ -49,11 +71,18 @@ router.patch("/donor/:donorId", async (req, res) => {
   const { donorId } = req.params;
   const { comment } = req.body;
   let currentDate = Date.now()
-  await Donors.updateOne({ _id: donorId }, { $set: { comment, endDate: currentDate, status: "finished" } });
-  
-  res.json({
-    message: "commented",
-  });
+
+  try {
+    await Donors.updateOne({ _id: donorId }, { $set: { comment, endDate: currentDate, isFinish: true } });
+    
+    res.status(200).json({
+      message: DSReview
+    });
+  } catch (err) {
+    res.status(400).json({
+      message: DFReview
+    });
+  };
 });
 
 module.exports = router;

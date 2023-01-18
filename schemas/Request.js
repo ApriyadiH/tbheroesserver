@@ -17,7 +17,7 @@ const requestSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    status: {
+    isDone: {
         type: Boolean,
         required: true
     }

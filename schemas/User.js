@@ -27,8 +27,8 @@ const userSchema = new mongoose.Schema({
   location: {
     type: Array
   },
-  status: {
-    type: String,
+  canDonate: {
+    type: Boolean,
     required: true
   }
 },{

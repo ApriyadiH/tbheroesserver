@@ -10,6 +10,8 @@
 
 // Import Library
 const express = require("express");
+const Joi = require("joi");
+const bcrypt = require('bcryptjs');
 const adminMiddleware = require("../middlewares/adminMiddleware");
 const authMiddleware = require("../middlewares/authMiddleware");
 const router = express.Router();
@@ -20,6 +22,7 @@ const Donors = require("../schemas/donor");
 const Events = require("../schemas/event");
 const Requests = require("../schemas/request");
 const Users = require("../schemas/user");
+const { GPasswordRegex } = require("../constants");
 
 // Test connection
 router.get("/schemas", (req, res) => {
@@ -33,6 +36,51 @@ router.get("/schemas/authmiddleware", authMiddleware, (req, res) => {
 // adminMiddleware Tester
 router.get("/schemas/adminmiddleware", adminMiddleware, (req, res) => {
   res.send("Connected to API tester schema with admin");
+});
+
+const registerSchema = Joi.object({
+  username: Joi.string().required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().pattern(new RegExp(GPasswordRegex)).required(),
+  confirmPassword: Joi.ref("password")
+});
+
+// Create Admin for database not for front-end
+router.post('/createAdmin', async (req, res) => {
+  try {
+    const user = await registerSchema.validateAsync(req.body);
+
+    if (user.password !== user.confirmPassword) {
+      return res.status(400).send({ message: "Password must match." })
+    }
+
+    const existUser = await Users.findOne({ email: user.email });
+
+    if (existUser) {
+      return res.status(400).send({ message: "There is already an account with that email. Use another email." })
+    }
+
+    bcrypt.hash(user.password, 10, (err, hash) => {
+        user.password = hash;
+        Users.create({ 
+          image: "https://icon-library.com/images/default-user-icon/default-user-icon-8.jpg",
+          username: user.username, 
+          email: user.email, 
+          password: user.password,
+          role: "admin",
+          canDonate: true
+        })
+          .then(user => {
+            res.status(201).send({ message: "Admin Created" })
+          })
+          .catch(err => {
+            res.status(400).send({ message: err.message })
+        });
+    })
+
+    } catch (error) {
+      return res.status(400).send({ message: "Data format is not valid." });
+    }
 });
 
 //   /$$$$$$  /$$                   /$$             

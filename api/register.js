@@ -1,97 +1,61 @@
+////////////////////
+// This is API for creating a new account
+////////////////////
+
 /// STATUS BISA DIBIKIN FALSE SAMPAI SUDAH VERIFIKASI EMAIL
 
 const express = require("express");
 const Joi = require("joi");
 const bcrypt = require('bcryptjs');
-
 const Users = require("../schemas/user");
+const { GSConnect, GPasswordRegex, RFPasswordMatch, RFUserExist, RDefaultImage, RUser, GFFormat, RSCreate } = require("../constants");
 
 const router = express.Router();
 
 router.get("/test/register", (req, res) => {
-  res.send("Connected to API register");
+  res.send(GSConnect);
 });
 
 const registerSchema = Joi.object({
   username: Joi.string().required(),
   email: Joi.string().email().required(),
-  password: Joi.string().pattern(new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-_]).{3,20}$")).required(),
+  password: Joi.string().pattern(new RegExp(GPasswordRegex)).required(),
   confirmPassword: Joi.ref("password")
 });
 
 // 2. Register
-router.post('/register', async (req, res) => {
+router.post("/register", async (req, res) => {
   try {
-    const user = await registerSchema.validateAsync(req.body);
+    const { username, email: emailInitial, password, confirmPassword } = await registerSchema.validateAsync(req.body);
 
-    if (user.password !== user.confirmPassword) {
-      return res.status(400).send({ message: "Password must match." })
-    }
+    const email = emailInitial.toLowerCase();
 
-    const existUser = await Users.findOne({ email: user.email });
+    const userExist = await Users.findOne({ email });
 
-    if (existUser) {
-        return res.status(400).send({ message: "There is already an account with that email. Use another email." })
-    }
+    if (userExist) {
+        return res.status(400).json({ message: RFUserExist })
+    };
 
-    bcrypt.hash(user.password, 10, (err, hash) => {
-      user.password = hash;
+    bcrypt.hash(password, 10, (err, hash) => {
       Users.create({ 
-        image: "https://icon-library.com/images/default-user-icon/default-user-icon-8.jpg",
-        username: user.username, 
-        email: user.email, 
-        password: user.password,
-        role: "user",
-        status: true
+        image: RDefaultImage ,
+        username, 
+        email,
+        password: hash,
+        role: RUser,
+        canDonate: false
       })
-        .then(user => {
-          res.status(201).send({ message: "Account created." })
+        .then(() => {
+          res.status(201).json({ message: RSCreate })
         })
         .catch(err => {
-          res.status(400).send({ message: err.message })
+          res.status(400).json({ message: err.message })
         });
     })
-  } catch (error) {
-    return res.status(400).send({ message: "Data format is not valid." });
+  } catch (err) {
+    return res.status(400).json({ message: GFFormat });
   }
 });
 
-// Create Admin for database not for front-end
-router.post('/createAdmin', async (req, res) => {
-  try {
-    const user = await registerSchema.validateAsync(req.body);
-
-    if (user.password !== user.confirmPassword) {
-      return res.status(400).send({ message: "Password must match." })
-    }
-
-    const existUser = await Users.findOne({ email: user.email });
-
-    if (existUser) {
-      return res.status(400).send({ message: "There is already an account with that email. Use another email." })
-    }
-
-    bcrypt.hash(user.password, 10, (err, hash) => {
-        user.password = hash;
-        Users.create({ 
-          image: "https://icon-library.com/images/default-user-icon/default-user-icon-8.jpg",
-          username: user.username, 
-          email: user.email, 
-          password: user.password,
-          role: "admin",
-          status: true
-        })
-          .then(user => {
-            res.status(201).send({ message: "Admin Created" })
-          })
-          .catch(err => {
-            res.status(400).send({ message: err.message })
-        });
-    })
-
-    } catch (error) {
-      return res.status(400).send({ message: "Data format is not valid." });
-    }
-});
 
 module.exports = router;
