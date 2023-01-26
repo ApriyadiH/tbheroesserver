@@ -8,8 +8,8 @@
 // Import
 const express = require("express");
 const authMiddleware = require("../middlewares/authMiddleware");
-const Chats = require("../schemas/chat");
 const { GSConnect, GFFind, CSCreate, CFCreate, } = require("../constants");
+const Chats = require("../schemas/chat");
 const Users = require("../schemas/user");
 
 const router = express.Router();
@@ -49,8 +49,7 @@ router.get("/chat/room/:userId", authMiddleware, async (req,res) => {
   const { userId } = req.params;
 
   try {
-    const chatroom = await Chats.distinct('roomId', {roomId: {$regex: userId}})
-
+    const chatroom = await Chats.distinct('roomId', {roomId: {$regex: userId}});
 
     const results = await Promise.all(chatroom.map(async (content)=>{
       if (content.split("+")[0] === userId){

@@ -6,7 +6,7 @@ const marker = require("./marker");
 const register = require("./register");
 const request = require("./request");
 const user = require("./user");
-const schematester = require("./schematester");
+// const schematester = require("./schematester");
 
 module.exports = [
   chat,
@@ -17,5 +17,5 @@ module.exports = [
   register,
   request,
   user,
-  schematester 
+  // schematester 
 ];
