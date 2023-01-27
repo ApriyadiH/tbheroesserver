@@ -20,14 +20,15 @@ router.get("/test/donor", (req, res) => {
 });
 
 // 28. get connected donor list
-router.get("/donor/:userId", authMiddleware, async (req, res) => {
-  const { userId } = req.params;
+router.get("/donor/:requestId", authMiddleware, async (req, res) => {
+  const { requestId } = req.params;
 
   try {
-    const donorList = await Donors.find({ userId }, DDContent);
-
+    const donorList = await Donors.find({ requestId }, DDContent);
+    
     const results = donorList.map(({ _id, requestId, endDate, comment, isFinish }) => ({
       donorId: _id,
+      username: "user1",
       requestId,
       date: endDate,
       comment,
@@ -47,7 +48,6 @@ router.get("/donor/:userId", authMiddleware, async (req, res) => {
 // 29. Add Donor
 router.post("/donor", authMiddleware, async (req, res) => {
   const { requestId, userId } = req.body;
-
   try {
     await Donors.create({ 
       requestId,

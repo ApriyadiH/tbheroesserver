@@ -23,7 +23,7 @@ router.get("/marker", async (req, res) => {
   try {
     const donor = await Users.find( {canDonate: true}, MDContentUser);
     const requestTemp = await Requests.find( {isDone: false}, MDContentRequest);
-
+    
     const request = await Promise.all(requestTemp?.map(async ( {_id, userId, location, bloodType, quantity, isDone} )=>{
       const userInfo = await Users.findOne({ _id: userId}, R2DContent2)
       return {
